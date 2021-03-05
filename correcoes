@@ -1,0 +1,8 @@
+-Drenangem subterranea -> onload
+-Editar presença de água no tópico ocorrências para remover duplicidade
+mysql> update tp set presenca_agua = "Áreas Saturadas" where presenca_agua = "Areas Saturadas";
+- verificar hidden nas outras ocorrencias
+
+
+
+strpos($_SERVER["REQUEST_URI"],"tp_edit")> -1
