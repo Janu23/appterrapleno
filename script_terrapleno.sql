@@ -201,7 +201,7 @@ CREATE TABLE `tp` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2021-03-03 17:35:43
-load data local infile '/var/www/html/terrapleno/base.csv'
+load data local infile '/var/www/html/appterrapleno/base135.csv'
      into table tp
      fields terminated by ';'
      enclosed by '"'

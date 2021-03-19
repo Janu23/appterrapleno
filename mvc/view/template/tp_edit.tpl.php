@@ -843,18 +843,18 @@
                     </div>
                 </div>
             </div><!--panel5-->
-            <div class="panel panel-default">
+            <!--<div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">Causas Prováveis</a>
                     <?php
-                        if (isset($this->arrayFicha['edit_causas_provaveis'])){
+                        /*if (isset($this->arrayFicha['edit_causas_provaveis'])){
                             if ($this->arrayFicha['edit_causas_provaveis'] == 1){
                                 echo '<span style="float:right;"><img src="../../img/icons/ok.png" width="20px"/></span>';
                             }else {
                                 echo '<span style="float:right;"><img src="../../img/icons/error.png" width="20px"/></span>';
                             }
-                        }
+                        }*/
                     ?>
                     </h4>
                 </div>
@@ -863,11 +863,11 @@
                       <div class="col-sm-12">
                             <form action="../controller/terraplenoController.php" method="post" id="infoCausasProvaveis"> 
                                 <fieldset>
-                                    <input type="hidden" name="id" value="<?php echo $this->id; ?>">
+                                    <input type="hidden" name="id" value="<?php //echo $this->id; ?>">
                                     <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Inclinação Acentuada" name="inclinacaoAcentuada" id="inclinacaoAcentuada" <?php  echo ($this->arrayFicha['inclinacao_acentuada'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Inclinação Acentuada" name="inclinacaoAcentuada" id="inclinacaoAcentuada" <?php  //echo ($this->arrayFicha['inclinacao_acentuada'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Inclinação Acentuada &nbsp;</label>
                                                 </div>
                                             </div>
@@ -875,7 +875,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Deficiência Superficial" name="deficienciaSuperficial" id="deficienciaSuperficial" <?php  echo ($this->arrayFicha['deficiencia_superficial'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Deficiência Superficial" name="deficienciaSuperficial" id="deficienciaSuperficial" <?php  //echo ($this->arrayFicha['deficiencia_superficial'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Deficiência Superficial &nbsp;</label>
                                                 </div>
                                             </div>
@@ -883,7 +883,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Tipo Solo" name="tipoSolo" id="tipoSolo" <?php  echo ($this->arrayFicha['tipo_solo'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Tipo Solo" name="tipoSolo" id="tipoSolo" <?php  //echo ($this->arrayFicha['tipo_solo'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Tipo Solo &nbsp;</label>
                                                 </div>
                                             </div>
@@ -891,7 +891,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Ausência Superficial" name="ausenciaSuperficial" id="ausenciaSuperficial" <?php  echo ($this->arrayFicha['ausencia_superficial'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Ausência Superficial" name="ausenciaSuperficial" id="ausenciaSuperficial" <?php  //echo ($this->arrayFicha['ausencia_superficial'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Ausência Superficial &nbsp;</label>
                                                 </div>
                                             </div>
@@ -900,7 +900,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Secagem Umedecimento de Solo" name="secagemUmedecimentoDeSolo" id="secagemUmedecimentoDeSolo" <?php  echo ($this->arrayFicha['secagem_umedecimento_de_solo'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Secagem Umedecimento de Solo" name="secagemUmedecimentoDeSolo" id="secagemUmedecimentoDeSolo" <?php  //echo ($this->arrayFicha['secagem_umedecimento_de_solo'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Secagem Umedecimento de Solo &nbsp;</label>
                                                 </div>
                                             </div>
@@ -908,7 +908,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Deficiência na Fundação" name="deficienciaNaFundacao" id="deficienciaNaFundacao" <?php  echo ($this->arrayFicha['deficiencia_na_fundacao'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Deficiência na Fundação" name="deficienciaNaFundacao" id="deficienciaNaFundacao" <?php  //echo ($this->arrayFicha['deficiencia_na_fundacao'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Deficiência na Fundação &nbsp;</label>
                                                 </div>
                                             </div>
@@ -916,7 +916,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Deficiência da Proteção Superficial" name="deficienciaDaProtecaoSuperficial" id="deficienciaDaProtecaoSuperficial" <?php  echo ($this->arrayFicha['deficiencia_da_protecao_superficial'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Deficiência da Proteção Superficial" name="deficienciaDaProtecaoSuperficial" id="deficienciaDaProtecaoSuperficial" <?php  //echo ($this->arrayFicha['deficiencia_da_protecao_superficial'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Deficiência da Proteção Superficial &nbsp;</label>
                                                 </div>
                                             </div>
@@ -924,7 +924,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Compactação Inadequada" name="compactacaoInadequada" id="compactacaoInadequada" <?php  echo ($this->arrayFicha['compactacao_inadequada'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Compactação Inadequada" name="compactacaoInadequada" id="compactacaoInadequada" <?php  //echo ($this->arrayFicha['compactacao_inadequada'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Compactação Inadequada &nbsp;</label>
                                                 </div>
                                             </div>
@@ -933,7 +933,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Descontinuidade do Maciço" name="descontinuidadeDoMacico" id="descontinuidadeDoMacico" <?php  echo ($this->arrayFicha['descontinuidade_do_macico'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Descontinuidade do Maciço" name="descontinuidadeDoMacico" id="descontinuidadeDoMacico" <?php  //echo ($this->arrayFicha['descontinuidade_do_macico'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Descontinuidade do Maciço &nbsp;</label>
                                                 </div>
                                             </div>
@@ -941,7 +941,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Saturação do Solo" name="saturacaoDoSolo" id="saturacaoDoSolo" <?php  echo ($this->arrayFicha['saturacao_do_solo'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Saturação do Solo" name="saturacaoDoSolo" id="saturacaoDoSolo" <?php  //echo ($this->arrayFicha['saturacao_do_solo'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Saturação do Solo &nbsp;</label>
                                                 </div>
                                             </div>
@@ -949,7 +949,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Ação de Terceiros" name="acaoDeTerceiros" id="acaoDeTerceiros" <?php  echo ($this->arrayFicha['acao_de_terceiro'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Ação de Terceiros" name="acaoDeTerceiros" id="acaoDeTerceiros" <?php  //echo ($this->arrayFicha['acao_de_terceiro'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Ação de Terceiros &nbsp;</label>
                                                 </div>
                                             </div>
@@ -957,7 +957,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Descompactação de Raízes" name="descompactacaoDeRaizes" id="descompactacaoDeRaizes" <?php  echo ($this->arrayFicha['descompactacao_de_raizes'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Descompactação de Raízes" name="descompactacaoDeRaizes" id="descompactacaoDeRaizes" <?php  //echo ($this->arrayFicha['descompactacao_de_raizes'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Descompactação de Raízes &nbsp;</label>
                                                 </div>
                                             </div>
@@ -965,7 +965,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Má Conformação do Talude" name="maConformacaoDoTalude" id="maConformacaoDoTalude" <?php  echo ($this->arrayFicha['ma_conformacao_do_talude'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Má Conformação do Talude" name="maConformacaoDoTalude" id="maConformacaoDoTalude" <?php  //echo ($this->arrayFicha['ma_conformacao_do_talude'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Má Conformação do Talude &nbsp;</label>
                                                 </div>
                                             </div>
@@ -973,7 +973,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Evolução de Erosão" name="evolucaoDeErosao" id="evolucaoDeErosao" <?php  echo ($this->arrayFicha['evolucao_erosao'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Evolução de Erosão" name="evolucaoDeErosao" id="evolucaoDeErosao" <?php  //echo ($this->arrayFicha['evolucao_erosao'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Evolução de Erosão &nbsp;</label>
                                                 </div>
                                             </div>
@@ -981,7 +981,7 @@
                                         <div class="col-sm-3">    
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input class="form-check-input" type="checkbox" value="Estiagem" name="estiagem" id="estiagem" <?php  echo ($this->arrayFicha['estiagem'] == "S") ? 'checked' : '';?>>     
+                                                    <input class="form-check-input" type="checkbox" value="Estiagem" name="estiagem" id="estiagem" <?php  //echo ($this->arrayFicha['estiagem'] == "S") ? 'checked' : '';?>>     
                                                     <label class="form-check-label" for="flexCheckDefault" style="padding-left:20px;">Estiagem &nbsp;</label>
                                                 </div>
                                             </div>
@@ -999,7 +999,7 @@
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Outras Causas Prováveis</span>
-                                                    <textarea id="outrasCausasProvaveis" name="outrasCausasProvaveis" class="form-control" type="text" rows="3" maxlength="150"><?php echo $this->arrayFicha['outras_causas_provaveis']; ?></textarea>
+                                                    <textarea id="outrasCausasProvaveis" name="outrasCausasProvaveis" class="form-control" type="text" rows="3" maxlength="150"><?php //echo $this->arrayFicha['outras_causas_provaveis']; ?></textarea>
                                                 </div>
                                             </div>           
                                         </div>
@@ -1014,7 +1014,7 @@
                         </div>
                     </div>
                 </div>
-            </div><!--panel6-->
+            </div>-->
             <!--<div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">

@@ -11,17 +11,18 @@
         //var_dump($_POST);
         $id = $_POST['id'];
 
+        $tp = new Terrapleno();
          //delete
         if ((isset($_POST['submit']) && $_POST['submit'] === 'Delete') || isset($_GET['id'])){
             $idToDelete = (isset($_GET['id'])) ? $_GET['id'] : $_POST['id'];
-            $tp = new Terrapleno();
+      
             $_SESSION['opResult'] = $tp->delete($idToDelete);
             //header('Location: ../views/tp_list.php');
             exit();
         }
 
         if (isset($_POST['submit']) && $_POST['submit'] === 'salvarInfoGeral'){
-            $tp = new Terrapleno();
+      
             $result = 1;
             $result *= $tp->update('km', $_POST['km'], $id);
             $result *= $tp->update('km_final', $_POST['kmFinal'], $id);
@@ -44,7 +45,7 @@
 
 
         if (isset($_POST['submit']) && $_POST['submit'] === 'salvarGeometria'){
-            $tp = new Terrapleno();
+      
             $result = 1;
             $result *= $tp->update('banqueta', $_POST['banqueta'], $id);
             $result *= $tp->update('altura', $_POST['altura'], $id);
@@ -73,7 +74,7 @@
        }
 
        if (isset($_POST['submit']) && $_POST['submit'] === 'salvarVegetacao'){
-          $tp = new Terrapleno();
+    
           $result = 1;
           $vegetacao = "";
 
@@ -114,7 +115,7 @@
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarDrenagem'){
-        $tp = new Terrapleno();
+  
         $result = 1;
         $drenagemSuperficial = "";
         $condicaoDrenagemSuperficial = "";
@@ -210,7 +211,7 @@
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarOcorrencias'){
-        $tp = new Terrapleno();
+  
         $result = 1;
         $ocorrencias = "";  
 
@@ -261,7 +262,7 @@
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarCausasProvaveis'){
-        $tp = new Terrapleno();
+  
         $result = 1;
         $causasProvaveis = "";
 
@@ -392,7 +393,7 @@
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarSolucoesProvaveis'){
-        $tp = new Terrapleno();
+  
         $result = 1;
 
         //input recuperacaoDeCoberturaVegetal
@@ -458,7 +459,7 @@
       }  
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarOutros'){
-        $tp = new Terrapleno();
+  
         $result = 1;
 
          //input contemPassivoAmbiental
@@ -485,7 +486,7 @@
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarFotos'){
-        $tp = new Terrapleno();
+  
         $result = 1;
         $nFotos = $tp->countParam("fotos","codFicha",$id);
         $identificacao = $_POST['identificacao'];
@@ -521,7 +522,7 @@
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarEstruturaDeContencao'){
-        $tp = new Terrapleno();
+  
         $result = 1;
 
         //input contemContencao
@@ -694,6 +695,245 @@
         //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
       }
 
+      //parametrizacao automatica das causas e soluções provaveis
+      //Define tudo como N inicialmente.
+      //Causas provaveis
+      $result *= $tp->update('ausencia_superficial', "N", $id);//A
+      $result *= $tp->update('secagem_umedecimento_de_solo', "N", $id);//A
+      $result *= $tp->update('deficiencia_na_fundacao', "N", $id);//C
+      $result *= $tp->update('deficiencia_da_protecao_superficial', "N", $id);//D
+      $result *= $tp->update('compactacao_inadequada', "N", $id);//E
+      $result *= $tp->update('descontinuidade_do_macico', "N", $id);//F
+      $result *= $tp->update('saturacao_do_solo', "N", $id);//G
+      $result *= $tp->update('acao_de_terceiro', "N", $id);//H
+      $result *= $tp->update('descompactacao_de_raizes', "N", $id);//I
+      $result *= $tp->update('ma_conformacao_do_talude', "N", $id);//J
+      $result *= $tp->update('evolucao_erosao', "N", $id);//K
+      $result *= $tp->update('estiagem', "N", $id);//L
+
+      //Solucoes provaveis
+      $result *= $tp->update('recuperacao_de_cobertura_vegetal', "N", $id);//A
+      $result *= $tp->update('retaludamento', "N", $id);//B
+      $result *= $tp->update('remocao_de_massa_instavel', "N", $id);//C
+      $result *= $tp->update('implantacao_de_drenagem', "N", $id);//D
+      $result *= $tp->update('implantacao_de_contencao', "N", $id);//E
+      $result *= $tp->update('recuperacao_de_plataforma', "N", $id);//F
+
+      //A partir da avaliacao atual é verificada o padrão de texto para definir o diagnostico
+      if (isset($ocorrencias)){
+        if (strpos($ocorrencias,"Queimadas")> -1){
+          //causas provaveis
+          $result *= $tp->update('estiagem', "S", $id);//L
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+
+          //solucoes provaveis
+          $result *= $tp->update('recuperacao_de_cobertura_vegetal', "S", $id);//A
+          $result *= $tp->update('retaludamento', "S", $id);//B
+        }
+
+        if (strpos($ocorrencias,"Arvores Com Risco de Queda")> -1){
+          //Causas provaveis
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('descompactacao_de_raizes', "S", $id);//I
+
+          //Solucoes provaveis
+          $result *= $tp->update('retaludamento', "S", $id);//B
+        }
+
+        if (strpos($ocorrencias,"Descalcamento da Base")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+
+          //Solucoes provaveis
+          $result *= $tp->update('recuperacao_de_cobertura_vegetal', "S", $id);//A
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('remocao_de_massa_instavel', "S", $id);//C
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+          $result *= $tp->update('implantacao_de_contencao', "S", $id);//E
+        }
+
+        if (strpos($ocorrencias,"Erosao Laminar")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+
+          //Solucoes provaveis
+          $result *= $tp->update('recuperacao_de_cobertura_vegetal', "S", $id);//A
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('remocao_de_massa_instavel', "S", $id);//C
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+        }
+
+        if (strpos($ocorrencias,"Blocos Instaveis")> -1|| strpos($ocorrencias,"Queda de Bloco")> -1 || strpos($ocorrencias,"Rolamento de Bloco")> -1){
+          //Causas provaveis
+          $result *= $tp->update('deficiencia_na_fundacao', "S", $id);//C
+          $result *= $tp->update('descontinuidade_do_macico', "S", $id);//F
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+
+          //Solucoes provaveis
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('implantacao_de_contencao', "S", $id);//E
+        }
+
+        if (strpos($ocorrencias,"Rastejo")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_na_fundacao', "S", $id);//C
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+
+          //Solucoes provaveis
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('remocao_de_massa_instavel', "S", $id);//C
+        }
+
+        if (strpos($ocorrencias,"Abatimento do Talude")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_na_fundacao', "S", $id);//C
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('descontinuidade_do_macico', "S", $id);//F
+          $result *= $tp->update('saturacao_do_solo', "S", $id);//G
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+
+
+          //Solucoes provaveis
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('remocao_de_massa_instavel', "S", $id);//C
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+          $result *= $tp->update('implantacao_de_contencao', "S", $id);//E
+          $result *= $tp->update('recuperacao_de_plataforma', "S", $id);//F
+        }
+
+        if (strpos($ocorrencias,"Trincas no Acostamento")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_na_fundacao', "S", $id);//C
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('descontinuidade_do_macico', "S", $id);//F
+          $result *= $tp->update('saturacao_do_solo', "S", $id);//G
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+
+
+          //Solucoes provaveis
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+          $result *= $tp->update('implantacao_de_contencao', "S", $id);//E
+          $result *= $tp->update('recuperacao_de_plataforma', "S", $id);//F
+        }
+
+        if (strpos($ocorrencias,"Abatimento de Pista no Acostamento")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_na_fundacao', "S", $id);//C
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('descontinuidade_do_macico', "S", $id);//F
+          $result *= $tp->update('saturacao_do_solo', "S", $id);//G
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+
+
+          //Solucoes provaveis
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+          $result *= $tp->update('implantacao_de_contencao', "S", $id);//E
+          $result *= $tp->update('recuperacao_de_plataforma', "S", $id);//F
+        }
+
+        if (strpos($ocorrencias,"Escorregamento")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('descontinuidade_do_macico', "S", $id);//F
+          $result *= $tp->update('saturacao_do_solo', "S", $id);//G
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+
+          //Solucoes provaveis
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('remocao_de_massa_instavel', "S", $id);//C
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+          $result *= $tp->update('implantacao_de_contencao', "S", $id);//E
+        }
+
+        if (strpos($ocorrencias,"Solo Exposto")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+          $result *= $tp->update('estiagem', "S", $id);//L
+
+          //Solucoes provaveis
+          $result *= $tp->update('recuperacao_de_cobertura_vegetal', "S", $id);//A
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+        }
+
+        if (strpos($ocorrencias,"Desagregacao Superficial")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+
+          //Solucoes provaveis
+          $result *= $tp->update('recuperacao_de_cobertura_vegetal', "S", $id);//A
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+        }
+
+        if (strpos($ocorrencias,"Erosao Diferenciada")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_na_fundacao', "S", $id);//C
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('estiagem', "S", $id);//L
+
+          //Solucoes provaveis
+          $result *= $tp->update('recuperacao_de_cobertura_vegetal', "S", $id);//A
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('remocao_de_massa_instavel', "S", $id);//C
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+        }
+
+        if (strpos($ocorrencias,"Erosao em Ravina")> -1 || strpos($ocorrencias,"Erosao em Vocoroca")> -1 || strpos($ocorrencias,"Erosao em Sulcos")> -1){
+          //Causas provaveis
+          $result *= $tp->update('ausencia_superficial', "S", $id);//A
+          $result *= $tp->update('deficiencia_na_fundacao', "S", $id);//C
+          $result *= $tp->update('deficiencia_da_protecao_superficial', "S", $id);//D
+          $result *= $tp->update('compactacao_inadequada', "S", $id);//E
+          $result *= $tp->update('acao_de_terceiro', "S", $id);//H
+          $result *= $tp->update('ma_conformacao_do_talude', "S", $id);//J
+          $result *= $tp->update('evolucao_erosao', "S", $id);//K
+
+          //Solucoes provaveis
+          $result *= $tp->update('recuperacao_de_cobertura_vegetal', "S", $id);//A
+          $result *= $tp->update('retaludamento', "S", $id);//B
+          $result *= $tp->update('remocao_de_massa_instavel', "S", $id);//C
+          $result *= $tp->update('implantacao_de_drenagem', "S", $id);//D
+        }
+
+      }
+
       $data = date("d/m/Y");
       $result *= $tp->update('data', $data, $id);
 
@@ -701,14 +941,14 @@
       $result *= $tp->update('data_ligacao', $dataLigacao, $id);
 
       //atualiza o status de edição sempre que uma operação é realizada
-      $tp = new Terrapleno();
+
       $infoEdit = $tp->findInfoEdit("tp", $id);
       
       if ($infoEdit["edit_geometria"] == 1 || 
           $infoEdit["edit_vegetacao"] == 1 ||
           $infoEdit["edit_drenagem"] == 1 ||
           $infoEdit["edit_ocorrencias"] == 1 ||
-          $infoEdit["edit_causas_provaveis"] == 1 ||
+          //$infoEdit["edit_causas_provaveis"] == 1 ||
           $infoEdit["edit_outros"] == 1 ||
           $infoEdit["edit_estrutura_de_contencao"] == 1 ||
           $infoEdit["edit_fotos"] == 1){
@@ -719,7 +959,7 @@
           $infoEdit["edit_vegetacao"] == 1 &&
           $infoEdit["edit_drenagem"] == 1 &&
           $infoEdit["edit_ocorrencias"] == 1 &&
-          $infoEdit["edit_causas_provaveis"] == 1 &&
+          //$infoEdit["edit_causas_provaveis"] == 1 &&
           $infoEdit["edit_outros"] == 1 &&
           $infoEdit["edit_estrutura_de_contencao"] == 1 &&
           $infoEdit["edit_fotos"] == 1){
@@ -727,6 +967,6 @@
             $tp->update('edit', $resultadoEdit, $id);          
       }
 
-      echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
+      //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
       ob_end_flush();  
 ?>

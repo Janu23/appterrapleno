@@ -16,7 +16,7 @@
     <body 
     <?php
         if (strpos($_SERVER["REQUEST_URI"],"tp_edit")> -1){
-            echo "onload=\"dinamicInputForm('checkOutrasCausasProvaveis','outrasCausasProvaveisDiv');dinamicInputForm('contemPassivoAmbiental','passivoAmbientalDiv');dinamicInputForm('contemContencao','bloco1');drenagemSub();\"";
+            echo "onload=\"dinamicInputForm('contemPassivoAmbiental','passivoAmbientalDiv');dinamicInputForm('contemContencao','bloco1');drenagemSub();\"";
         }
     ?>
     >
