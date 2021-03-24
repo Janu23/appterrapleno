@@ -1281,7 +1281,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Extensão da Estrutura de Contenção</span>
-                                                    <input id="extensaoEstruturaContencao1" name="extensaoEstruturaContencao1" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao1']; ?>" required>
+                                                    <input id="extensaoEstruturaContencao1" name="extensaoEstruturaContencao1" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao1']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>
@@ -1289,7 +1289,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Altura da Estrutura de Contenção</span>
-                                                    <input id="alturaEstruturaContencao1" name="alturaEstruturaContencao1" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao1']; ?>" required>
+                                                    <input id="alturaEstruturaContencao1" name="alturaEstruturaContencao1" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao1']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>
@@ -1349,7 +1349,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Extensão da Estrutura de Contenção</span>
-                                                    <input id="extensaoEstruturaContencao2" name="extensaoEstruturaContencao2" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao2']; ?>" required>
+                                                    <input id="extensaoEstruturaContencao2" name="extensaoEstruturaContencao2" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao2']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>
@@ -1357,7 +1357,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Altura da Estrutura de Contenção</span>
-                                                    <input id="alturaEstruturaContencao2" name="alturaEstruturaContencao2" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao2']; ?>" required>
+                                                    <input id="alturaEstruturaContencao2" name="alturaEstruturaContencao2" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao2']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>
@@ -1417,7 +1417,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Extensão da Estrutura de Contenção</span>
-                                                    <input id="extensaoEstruturaContencao3" name="extensaoEstruturaContencao3" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao3']; ?>" required>
+                                                    <input id="extensaoEstruturaContencao3" name="extensaoEstruturaContencao3" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao3']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>
@@ -1425,7 +1425,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Altura da Estrutura de Contenção</span>
-                                                    <input id="alturaEstruturaContencao3" name="alturaEstruturaContencao3" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao3']; ?>" required>
+                                                    <input id="alturaEstruturaContencao3" name="alturaEstruturaContencao3" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao3']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>
@@ -1485,7 +1485,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Extensão da Estrutura de Contenção</span>
-                                                    <input id="extensaoEstruturaContencao4" name="extensaoEstruturaContencao4" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao4']; ?>" required>
+                                                    <input id="extensaoEstruturaContencao4" name="extensaoEstruturaContencao4" class="form-control" type="text" value="<?php echo $this->arrayFicha['extensao_estrutura_contencao4']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>
@@ -1493,7 +1493,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                     <span class="input-group-addon">Altura da Estrutura de Contenção</span>
-                                                    <input id="alturaEstruturaContencao4" name="alturaEstruturaContencao4" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao4']; ?>" required>
+                                                    <input id="alturaEstruturaContencao4" name="alturaEstruturaContencao4" class="form-control" type="text" value="<?php echo $this->arrayFicha['altura_estrutura_contencao4']; ?>">
                                                     </div>  
                                                 </div>           
                                             </div>

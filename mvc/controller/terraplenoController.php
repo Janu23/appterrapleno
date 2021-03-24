@@ -541,6 +541,18 @@
         $fotoInacessivelCima = (isset($_POST['fotoInacessivelCima'])) ? "S" : "N";
         $result *= $tp->update('foto_inacessivel_cima', $fotoInacessivelCima, $id);
 
+        //input situacaoPassivo
+        if (isset($_POST['situacaoPassivo'])){
+          $result *= $tp->update('situacao_passivo', $_POST['situacaoPassivo'], $id);
+        }else {
+          $result *= $tp->update('situacao_passivo', ' ', $id);          
+        }
+
+        //input diretrizRecuperacao
+        if (isset($_POST['diretrizRecuperacao'])){
+          $result *= $tp->update('diretriz_recuperacao', $_POST['diretrizRecuperacao'], $id);
+        }
+
 
         //A informação de estrutura de contenção só é atualizada se o check contemContencao estiver marcado
         if ($contemContencao == "Sim"){        
@@ -650,18 +662,6 @@
           //input elementosConcretoAco4
           if (isset($_POST['elementosConcretoAco4'])){
             $result *= $tp->update('elementos_concreto_aco4', $_POST['elementosConcretoAco4'], $id);
-          }
-
-          //input situacaoPassivo
-          if (isset($_POST['situacaoPassivo'])){
-            $result *= $tp->update('situacao_passivo', $_POST['situacaoPassivo'], $id);
-          }else {
-            $result *= $tp->update('situacao_passivo', ' ', $id);          
-          }
-
-          //input diretrizRecuperacao
-          if (isset($_POST['diretrizRecuperacao'])){
-            $result *= $tp->update('diretriz_recuperacao', $_POST['diretrizRecuperacao'], $id);
           }
 
         } else {
@@ -967,6 +967,6 @@
             $tp->update('edit', $resultadoEdit, $id);          
       }
 
-      //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
+      echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
       ob_end_flush();  
 ?>
