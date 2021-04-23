@@ -13,8 +13,15 @@
         $id = $_GET['id'];
     }
     $template->arrayFicha = $terrapleno->find($id);
+
+    //Se o id(sequncial) da proxima ficha(clicando no next ficha) não existir, volta pra planilha
+    if(!$template->arrayFicha){
+        header("location: tp_list.php");
+    }
+
     $template->count = $terrapleno->countParam("fotos","codFicha",$id);
     $template->id = $id;
+    $_SESSION['identificacao'] = $template->arrayFicha['identificacao'];
     $template->render('tp_edit.tpl.php');
 
 ?>

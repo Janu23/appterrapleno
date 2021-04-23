@@ -9,7 +9,9 @@
         ini_set("display_errors", 1);
 
         //var_dump($_POST);
-        $id = $_POST['id'];
+        if (isset($_POST['submit']) && $_POST['submit'] != 'Cadastrar'){
+            $id = $_POST['id'];
+        }
 
         $tp = new Terrapleno();
          //delete
@@ -21,59 +23,139 @@
             exit();
         }
 
-        if (isset($_POST['submit']) && $_POST['submit'] === 'salvarInfoGeral'){
-      
-            $result = 1;
-            $result *= $tp->update('km', $_POST['km'], $id);
-            $result *= $tp->update('km_final', $_POST['kmFinal'], $id);
-            $result *= $tp->update('rodovia', $_POST['rodovia'], $id);
-            $result *= $tp->update('sentido', $_POST['sentido'], $id);
-            $result *= $tp->update('estado', $_POST['estado'], $id);
-            $result *= $tp->update('trecho', $_POST['trecho'], $id);
-            $result *= $tp->update('lado', $_POST['lado'], $id);
-            $result *= $tp->update('terrapleno_contencao', $_POST['terraplenoContencao'], $id);
-            $result *= $tp->update('distancia_acostamento', $_POST['distanciaAcostamento'], $id);
-            $result *= $tp->update('material_origem', $_POST['materialOrigem'], $id);
-            $result *= $tp->update('latitude1', $_POST['latitude1'], $id);
-            $result *= $tp->update('longitude1', $_POST['longitude1'], $id);
-            $result *= $tp->update('latitude2', $_POST['latitude2'], $id);
-            $result *= $tp->update('longitude2', $_POST['longitude2'], $id);
-            $tp->update('edit_info_geral', $result, $id);
-            $_SESSION['resultInfoGeral'] = $result;
-            //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
+      if (isset($_POST['submit']) && $_POST['submit'] === 'Cadastrar'){
+        $dp = new Terrapleno();
+
+        if ($_POST['sentido']== "CANTEIRO CENTRAL"){
+            $sentido = "C";
+        }else if ($_POST['sentido']== "NORTE"){
+            $sentido = "N";
+        } else {
+            $sentido = "S";
         }
 
+        $numRodovia = substr($_POST['rodovia'], -3);
+        $identificacao_base = "TP ".$numRodovia." ".$_POST['estado']." ".$_POST['km']." ".$sentido;
+        $nIdentificacao = $dp->verificaIdentificacao("tp",'"'.$identificacao_base.'"');
 
-        if (isset($_POST['submit']) && $_POST['submit'] === 'salvarGeometria'){
-      
-            $result = 1;
-            $result *= $tp->update('banqueta', $_POST['banqueta'], $id);
-            $result *= $tp->update('altura', $_POST['altura'], $id);
-            $result *= $tp->update('inclinacao', $_POST['inclinacao'], $id);
-            $result *= $tp->update('tipo_terrapleno', $_POST['tipoTerrapleno'], $id);
-            $result *= $tp->update('tipo_relevo', $_POST['tipoRelevo'], $id);
+        $identificacao = $identificacao_base." ".($nIdentificacao[0]+1);
+        $dispositivo = new Terrapleno();
+        //Set variáveis de cadastro
+        $dispositivo->__set("km", $_POST['km']);
+        $dispositivo->__set("kmFinal", $_POST['kmFinal']);
+        $dispositivo->__set("distanciaAcostamento", $_POST['distanciaAcostamento']);
+        $dispositivo->__set("materialOrigem", $_POST['materialOrigem']);
+        $dispositivo->__set("latitude1", $_POST['latitude1']);
+        $dispositivo->__set("longitude1", $_POST['longitude1']);
+        $dispositivo->__set("latitude2", $_POST['latitude2']);
+        $dispositivo->__set("longitude2", $_POST['longitude2']);
+        $dispositivo->__set("terraplenoContencao", $_POST['terraplenoContencao']);
+        $dispositivo->__set("lado", $_POST['lado']);
+        $dispositivo->__set("sentido", $_POST['sentido']);
+        $dispositivo->__set("estado", $_POST['estado']);
+        $dispositivo->__set("rodovia", $_POST['rodovia']);
+        $dispositivo->__set("trecho", $_POST['trecho']);
+        $dispositivo->__set("identificacao", $identificacao);
 
-          //input comprimento
-          if (isset($_POST['comprimento'])){
-            $result *= $tp->update('comprimento', $_POST['comprimento'], $id);
-          }
+        $result = $dispositivo->insert();
+        if ($result){
+            unset($_SESSION);
+            $id = $dispositivo->getMaxCodAuto("tp")[0];
+        } else {
+            $id = 0;
+        }
 
-          //input localizacaoDispositivo
-          if (isset($_POST['localizacaoDispositivo'])){
-          $result *= $tp->update('localizacao_dispositivo', $_POST['localizacaoDispositivo'], $id);
-          }
+        $dispositivo->update('edit_info_geral', "1", $id);
+      }
 
-          //input geometria
-          if (isset($_POST['geometria'])){
-            $result *= $tp->update('geometria', $_POST['geometria'], $id);
-          }
+      if (isset($_POST['submit']) && $_POST['submit'] === 'salvarFotos'){
+  
+        $result = 1;
+        $numfotos = $tp->countParam("fotos","codFicha",$id)[0];
+        $identificacao = $_POST['identificacao'];
+        $observacao = $_POST['observacao'];
+        $data = date("d/m/Y");
+        $diretorio = "../../fotos/".str_replace("/","-",$data);
+        if (!file_exists($diretorio)){
+          mkdir($diretorio, 0777);
+        }
 
-            $tp->update('edit_geometria', $result, $id);
-            $_SESSION['resultGeometria'] = $result;
-            //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
-       }
+        //ver se os arquivos foram setados
+	      $arquivo = isset($_FILES['foto']) ? $_FILES['foto'] : FALSE;
 
-       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarVegetacao'){
+        //laço de inserção dos arquivos
+        for ($controle = 0; $controle < count($arquivo['name']); $controle++){
+          $currentName = $arquivo['name'][$controle]; 
+          $parts = explode(".",$currentName);
+          $extension = array_pop($parts);
+          $newName = $identificacao."_".$numfotos;
+          $destination = "{$diretorio}/{$newName}.{$extension}";
+        //renomeia os arquivos e define o local onde salva
+            if ( move_uploaded_file ($arquivo['tmp_name'][$controle] , $destination)) {
+              $result *= $tp->salvarFoto($id, $newName.".".$extension, $data, $observacao);
+              $tp->update('edit_fotos', $result, $id);
+              $_SESSION['resultFotos'] = 1;
+              //echo "Arquivo enviado com sucesso!";
+            } 
+            else {
+              //echo  "Erro, o arquivo 1 nao enviado! \ n" ;
+              $result = 0;
+              $tp->update('edit_fotos', $result, $id);
+              $_SESSION['resultFotos'] = 0;
+            }
+            $numfotos++;
+        }
+      }
+
+      if (isset($_POST['submit']) && $_POST['submit'] === 'salvarInfoGeral'){
+          $result = 1;
+          $result *= $tp->update('km', $_POST['km'], $id);
+          $result *= $tp->update('km_final', $_POST['kmFinal'], $id);
+          $result *= $tp->update('rodovia', $_POST['rodovia'], $id);
+          $result *= $tp->update('sentido', $_POST['sentido'], $id);
+          $result *= $tp->update('estado', $_POST['estado'], $id);
+          $result *= $tp->update('trecho', $_POST['trecho'], $id);
+          $result *= $tp->update('lado', $_POST['lado'], $id);
+          $result *= $tp->update('terrapleno_contencao', $_POST['terraplenoContencao'], $id);
+          $result *= $tp->update('distancia_acostamento', $_POST['distanciaAcostamento'], $id);
+          $result *= $tp->update('material_origem', $_POST['materialOrigem'], $id);
+          $result *= $tp->update('latitude1', $_POST['latitude1'], $id);
+          $result *= $tp->update('longitude1', $_POST['longitude1'], $id);
+          $result *= $tp->update('latitude2', $_POST['latitude2'], $id);
+          $result *= $tp->update('longitude2', $_POST['longitude2'], $id);
+          $tp->update('edit_info_geral', $result, $id);
+          $_SESSION['resultInfoGeral'] = $result;
+      }
+
+
+      if (isset($_POST['submit']) && $_POST['submit'] === 'salvarGeometria'){
+          $result = 1;
+          $result *= $tp->update('banqueta', $_POST['banqueta'], $id);
+          $result *= $tp->update('altura', $_POST['altura'], $id);
+          $result *= $tp->update('inclinacao', $_POST['inclinacao'], $id);
+          $result *= $tp->update('tipo_terrapleno', $_POST['tipoTerrapleno'], $id);
+          $result *= $tp->update('tipo_relevo', $_POST['tipoRelevo'], $id);
+
+        //input comprimento
+        if (isset($_POST['comprimento'])){
+          $result *= $tp->update('comprimento', $_POST['comprimento'], $id);
+        }
+
+        //input localizacaoDispositivo
+        if (isset($_POST['localizacaoDispositivo'])){
+        $result *= $tp->update('localizacao_dispositivo', $_POST['localizacaoDispositivo'], $id);
+        }
+
+        //input geometria
+        if (isset($_POST['geometria'])){
+          $result *= $tp->update('geometria', $_POST['geometria'], $id);
+        }
+
+          $tp->update('edit_geometria', $result, $id);
+          $_SESSION['resultGeometria'] = $result;
+      }
+
+      if (isset($_POST['submit']) && $_POST['submit'] === 'salvarVegetacao'){
     
           $result = 1;
           $vegetacao = "";
@@ -111,7 +193,6 @@
           
           $tp->update('edit_vegetacao', $result, $id);
           $_SESSION['resultVegetacao'] = $result;
-          //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarDrenagem'){
@@ -120,7 +201,6 @@
         $drenagemSuperficial = "";
         $condicaoDrenagemSuperficial = "";
         $condicaoDrenagemSubterranea = "";
-
 
         //input drenagem superficial
         if (isset($_POST['naturalSuperficial'])){
@@ -188,8 +268,6 @@
 
         $result *= $tp->update('condicao_drenagem_subterranea', $condicaoDrenagemSubterranea, $id);
 
-
-
         //input localDreSuper1
         if (isset($_POST['localDreSuper1'])){
           $result *= $tp->update('local_dre_super1', $_POST['localDreSuper1'], $id);
@@ -207,7 +285,6 @@
 
         $tp->update('edit_drenagem', $result, $id);
         $_SESSION['resultDrenagem'] = $result;
-        //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarOcorrencias'){
@@ -258,7 +335,6 @@
 
         $tp->update('edit_ocorrencias', $result, $id);
         $_SESSION['resultOcorrencias'] = $result;
-        //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
       }
 
       if (isset($_POST['submit']) && $_POST['submit'] === 'salvarCausasProvaveis'){
@@ -482,42 +558,6 @@
 
         $tp->update('edit_outros', $result, $id);
         $_SESSION['resultOutros'] = $result;
-        //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
-      }
-
-      if (isset($_POST['submit']) && $_POST['submit'] === 'salvarFotos'){
-  
-        $result = 1;
-        $nFotos = $tp->countParam("fotos","codFicha",$id);
-        $identificacao = $_POST['identificacao'];
-        $observacao = $_POST['observacao'];
-        $data = date("d/m/Y");
-        $diretorio = "../../fotos";
-        if (!file_exists($diretorio)){
-          mkdir($diretorio, 0777);
-        }
-
-        if (isset($_FILES ['foto']) && !empty($_FILES["foto"]["name"])){  
-          $currentName = $_FILES ['foto']['name']; 
-          $parts = explode(".",$currentName);
-          $extension = array_pop($parts);
-          $newName = $identificacao."_".$nFotos[0];
-          $destination = "{$diretorio}/{$newName}.{$extension}";
-  
-            if ( move_uploaded_file ( $_FILES ['foto']['tmp_name'] , $destination)) {
-                $result *= $tp->salvarFoto($id, $newName.".".$extension, $data, $observacao);
-                $tp->update('edit_fotos', $result, $id);
-                $_SESSION['resultFotos'] = 1;
-                //echo "Arquivo enviado com sucesso!";
-            } 
-            else {
-             //echo  "Erro, o arquivo 1 nao enviado! \ n" ;
-             $result = 0;
-             $tp->update('edit_fotos', $result, $id);
-             $_SESSION['resultFotos'] = 0;
-            }
-        }
-
         //echo("<script>location.href='../view/tp_edit.php?id={$id}';</script>");
       }
 
@@ -948,7 +988,6 @@
           $infoEdit["edit_vegetacao"] == 1 ||
           $infoEdit["edit_drenagem"] == 1 ||
           $infoEdit["edit_ocorrencias"] == 1 ||
-          //$infoEdit["edit_causas_provaveis"] == 1 ||
           $infoEdit["edit_outros"] == 1 ||
           $infoEdit["edit_estrutura_de_contencao"] == 1 ||
           $infoEdit["edit_fotos"] == 1){
@@ -959,7 +998,6 @@
           $infoEdit["edit_vegetacao"] == 1 &&
           $infoEdit["edit_drenagem"] == 1 &&
           $infoEdit["edit_ocorrencias"] == 1 &&
-          //$infoEdit["edit_causas_provaveis"] == 1 &&
           $infoEdit["edit_outros"] == 1 &&
           $infoEdit["edit_estrutura_de_contencao"] == 1 &&
           $infoEdit["edit_fotos"] == 1){

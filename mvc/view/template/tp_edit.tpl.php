@@ -45,7 +45,7 @@
                     <input type="hidden" name="id" value="<?php echo $this->id; ?>">
                     <input type="hidden" name="identificacao" value="<?php echo $this->arrayFicha['identificacao']; ?>">
                     <label class=" control-label" for="foto">Adicione a foto:</label> 
-                        <input id="foto" name="foto" type="file" accept="image/*">  
+                        <input id="foto" name="foto[]" type="file" accept="image/*" multiple>  
                 </div>
                 <div class="col-sm-6">
                 <br>
@@ -66,6 +66,37 @@
                 </form>
             </div>
         </div> 
+        <br>
+
+        <div class="card">
+            <div class="card-header">Editar Croqui</div>
+            <div class="card-body">
+                <div class="col-sm-10">
+                    <p>O Croqui pode ser editado quantas vezes quiser. Porém, somente a última edição permanecerá armazenada.</p>
+                </div>
+                <div class="col-sm-2">
+                    <a href="edit_croqui.php?id=<?php echo $this->id; ?>" class="btn btn-primary" style="float:right;"><span style="float:left;"></span><b>Editar</b> &nbsp; <img src="../../img/icons/edit.png" width="20px"/> </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" hidden>
+            <div class="card-header">Editar Croqui</div>
+            <div class="card-body">
+                <div class="col-sm-12">
+                    <h5 class="card-title"></h5>
+                </div>
+                <div class="col-sm-12" style="padding:0px;">
+                <canvas id="canvas" class="canvas" width="900px" height="400px" style = "background-size: 100% 100%;">
+                    Seu browser não suporta canvas, é hora de trocar!.
+                </canvas>
+                </div>
+                <div class="col-sm-12">
+                    <button id="saveBtn" class="btn btn-success" type="button">Salvar</button>
+                    <input type='text' id="togglePaletteOnly" />
+                </div>
+            </div>
+        </div>  
         <br>
         <div class="panel-group" id="accordion">
         <div class="panel panel-default">
@@ -229,7 +260,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                         <span class="input-group-addon">Latitude</span>
-                                        <input id="latitude2" name="latitude2" class="form-control" type="text" value="<?php echo $this->arrayFicha['latitude2']; ?>" readonly required>
+                                        <input id="latitude2" name="latitude2" class="form-control" type="text" value="<?php echo $this->arrayFicha['latitude2']; ?>" readonly >
                                         </div>
                                         
                                     </div>           
@@ -238,7 +269,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                         <span class="input-group-addon">Longitude</span>
-                                        <input id="longitude2" name="longitude2" class="form-control" type="text" value="<?php echo $this->arrayFicha['longitude2'];?>" readonly required>
+                                        <input id="longitude2" name="longitude2" class="form-control" type="text" value="<?php echo $this->arrayFicha['longitude2'];?>" readonly>
                                         </div>
                                     </div>           
                                 </div>
@@ -753,67 +784,66 @@
                                         </div>           
                                     </div>
                                         <div class="col-sm-12">
-                                            <p><b></b></p>
-                                        </div>
-                                        <div class="col-sm-12">
                                         <hr>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                            <label>Tipo de Ocorrência<small style="color:red;"> (Adicione ocorrências quantas vezes for necessário)</small></label>
-                                                <select class="form-control select2" name="tipoDeOcorrencia" id="tipoDeOcorrencia" style="width: 100%;" onchange="ocorrencia();">
-                                                    <option value="abatimento_de_pista_no_acostamento">Abatimento de Pista no Acostamento</option>
-                                                    <option value="abatimento_do_talude">Abatimento do Talude</option>
-                                                    <option value="arvores_com_risco_de_queda">Árvores Com Risco de Queda</option>
-                                                    <option value="blocos_instaveis">Blocos Instáveis</option>
-                                                    <option value="desagregacao_superficial">Desagregação Superficial</option>
-                                                    <option value="descalcamento_na_base">Descalçamento da Base</option>
-                                                    <option value="escorregamento">Escorregamento</option>
-                                                    <option value="erosao_diferenciada">Erosão Diferenciada</option>
-                                                    <option value="erosao_laminar">Erosão Laminar </option>
-                                                    <option value="erosao_em_sulcos">Erosão em Sulcos</option>
-                                                    <option value="erosao_em_ravina">Erosão em Ravina</option>
-                                                    <option value="erosao_em_vocoroca">Erosão em Voçoroca</option>
-                                                    <option value="nenhuma">Nenhuma</option>
-                                                    <option value="check_outro_tipo_ocorrencia">Outro Tipo de Ocorrência</option>
-                                                    <option value="queimadas">Queimadas</option>
-                                                    <option value="queda_de_bloco">Queda de Bloco</option>
-                                                    <option value="rastejo">Rastejo</option>
-                                                    <option value="rolamento_de_bloco">Rolamento de Bloco</option>
-                                                    <option value="solo_exposto">Solo Exposto</option>
-                                                    <option value="trincas_no_acostamento">Trincas no Acostamento</option>
-                                                </select>  
-                                            </div>
-                                        </div>           
-                                    </div>
-                                    <div class="col-sm-12">
-                                    <small style="color:red;">Sempre adicione as unidades de medida na <u>Dimensão</u> e na <u>Localização</u>! (Ex: 5m, 4,23mX3mX8m, Km 000+450, Km 000+750 ao Km 450+050)</small>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"> Dimensão(m)</span>
-                                                <input id="dimensao" name="dimensao" class="form-control" type="text" placeholder="5,25m ou 5mX4mX2,5m">
-                                            </div>
-                                        </div>           
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"> Localização(km)</span>
-                                                <input id="localizacao" name="localizacao" class="form-control" type="text"  placeholder="Km 000+450 ao Km 000+556">
-                                            </div>
-                                        </div>           
-                                    </div>
-                                    <div class="col-sm-12" id="outroTipoDeOcorrenciaDiv" hidden>
-                                        <br>
+                                        </div>
+                                        <div>
+                                            <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                <label>Descreva <u>aqui</u> o outro tipo de ocorrência:</label>
-                                                    <textarea id="outroTipoDeOcorrencia" name="outroTipoDeOcorrencia" class="form-control" type="text" rows="2" maxlength="150"><?php echo $this->arrayFicha['outro_tipo_ocorrencia']; ?></textarea>
+                                                <label>Tipo de Ocorrência<small style="color:red;"> (Adicione quantas vezes for necessário)</small></label>
+                                                    <select class="form-control select2" name="tipoDeOcorrencia" id="tipoDeOcorrencia" style="width: 100%;" onchange="ocorrencia();">
+                                                        <option value="abatimento_de_pista_no_acostamento">Abatimento de Pista no Acostamento</option>
+                                                        <option value="abatimento_do_talude">Abatimento do Talude</option>
+                                                        <option value="arvores_com_risco_de_queda">Árvores Com Risco de Queda</option>
+                                                        <option value="blocos_instaveis">Blocos Instáveis</option>
+                                                        <option value="desagregacao_superficial">Desagregação Superficial</option>
+                                                        <option value="descalcamento_na_base">Descalçamento da Base</option>
+                                                        <option value="escorregamento">Escorregamento</option>
+                                                        <option value="erosao_diferenciada">Erosão Diferenciada</option>
+                                                        <option value="erosao_laminar">Erosão Laminar </option>
+                                                        <option value="erosao_em_sulcos">Erosão em Sulcos</option>
+                                                        <option value="erosao_em_ravina">Erosão em Ravina</option>
+                                                        <option value="erosao_em_vocoroca">Erosão em Voçoroca</option>
+                                                        <option value="nenhuma">Nenhuma</option>
+                                                        <option value="check_outro_tipo_ocorrencia">Outro Tipo de Ocorrência</option>
+                                                        <option value="queimadas">Queimadas</option>
+                                                        <option value="queda_de_bloco">Queda de Bloco</option>
+                                                        <option value="rastejo">Rastejo</option>
+                                                        <option value="rolamento_de_bloco">Rolamento de Bloco</option>
+                                                        <option value="solo_exposto">Solo Exposto</option>
+                                                        <option value="trincas_no_acostamento">Trincas no Acostamento</option>
+                                                    </select>  
                                                 </div>
                                             </div>           
                                         </div>
-                                    <br>
+                                
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <label> Dimensão (m) <small style="color:red;">*</small></label>
+                                                    <input id="dimensao" name="dimensao" class="form-control" type="text" placeholder="5,25m ou 5mX4mX2,5m" required>
+                                                </div>
+                                            </div>           
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <label> Localização (km) <small style="color:red;">*</small></label>
+                                                    <input id="localizacao" name="localizacao" class="form-control" type="text"  placeholder="Km 000+450 ao Km 000+556" required>
+                                                </div>
+                                            </div>           
+                                        </div>
+                                        <div class="col-sm-12" id="outroTipoDeOcorrenciaDiv" hidden>
+                                            <br>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <label>Descreva <u>aqui</u> o outro tipo de ocorrência:</label>
+                                                        <textarea id="outroTipoDeOcorrencia" name="outroTipoDeOcorrencia" class="form-control" type="text" rows="2" maxlength="150"><?php echo $this->arrayFicha['outro_tipo_ocorrencia']; ?></textarea>
+                                                    </div>
+                                                </div>           
+                                            </div>
+                                        <br>
+                                    </div><!--Fim bloco tipo ocorrência-->
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <div class="input-group">
@@ -1581,5 +1611,104 @@
         <br>
     </div>        <br><br>
     </div><!--end container-->
+    <script src='../../spectrum/spectrum.js'></script>
+    <script>
+        $("#togglePaletteOnly").spectrum({
+            showPaletteOnly: true,
+            togglePaletteOnly: true,
+            togglePaletteMoreText: 'more',
+            togglePaletteLessText: 'less',
+            color: 'black',
+            palette: [
+                ["#000","#444","#666","#999","#ccc","#eee","#f3f3f3","#fff"],
+                ["#f00","#f90","#ff0","#0f0","#0ff","#00f","#90f","#f0f"],
+                ["#f4cccc","#fce5cd","#fff2cc","#d9ead3","#d0e0e3","#cfe2f3","#d9d2e9","#ead1dc"],
+                ["#ea9999","#f9cb9c","#ffe599","#b6d7a8","#a2c4c9","#9fc5e8","#b4a7d6","#d5a6bd"],
+                ["#e06666","#f6b26b","#ffd966","#93c47d","#76a5af","#6fa8dc","#8e7cc3","#c27ba0"],
+                ["#c00","#e69138","#f1c232","#6aa84f","#45818e","#3d85c6","#674ea7","#a64d79"],
+                ["#900","#b45f06","#bf9000","#38761d","#134f5c","#0b5394","#351c75","#741b47"],
+                ["#600","#783f04","#7f6000","#274e13","#0c343d","#073763","#20124d","#4c1130"]
+            ]
+        });
+    </script>
+    <script>
+            window.onload = function ()
+            {
+                // Your code goes here
+                var Draw = {
+                obj : document.getElementById('canvas'),
+                contexto : document.getElementById('canvas').getContext("2d"),
+                _init:function(){
+                    Draw.obj.addEventListener("touchmove",  Draw._over, false);
+                    Draw.obj.addEventListener("touchstart", Draw._ativa, false);
+                    Draw.obj.addEventListener("touchend", Draw._inativa, false);
 
+                    Draw.obj.onselectstart = function () { return false; };
+                },
+                _over:function(e){
+                    const x = e.targetTouches[0].clientX;
+                    const y = e.targetTouches[0].clientY;
+                    if(!Draw.ativo) return;
+                    Draw.contexto.beginPath();
+                    Draw.contexto.lineTo(Draw.x,Draw.y);
+                    Draw.contexto.lineTo(x, y);
+                    Draw.contexto.stroke();
+                    Draw.contexto.closePath();
+                    Draw.x = x;
+                    Draw.y = y;
+                },
+                _ativa:function(e){
+                    Draw.ativo = true;
+                    Draw.x = e.targetTouches[0].clientX;
+                    Draw.y = e.targetTouches[0].clientY;
+                },
+                _inativa:function(){
+                    Draw.ativo = false;
+                }   
+            }
+            Draw._init();
+            }
+            const saveBtn = document.getElementById("saveBtn");
+            const canvas = document.getElementById("canvas");
+
+            var ctxBg = canvas.getContext('2d');
+
+            var imgSprite = new Image();
+            imgSprite.src = "../../img/croqui.jpeg";
+            imgSprite.onload = function() {
+            ctxBg.drawImage(imgSprite,0,0,1135,550,0,0,900,400);
+
+        }
+
+
+        saveBtn.onclick = function (e) {
+            var http = new XMLHttpRequest();
+
+            // Converte o canvas para image/png; base64:
+            var image = canvas.toDataURL();
+
+            // Define a imagem como valor a ser enviado:
+            var params = "image=" + image; 
+            //console.log(params);
+            http.open("POST", "../controller/save.php", true);
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // Talvez o Content-type pode ser outro, não tenho certeza quanto a isso
+
+            http.onreadystatechange = function() {//Call a function when the state changes.
+                if(http.readyState == 4 && http.status == 200) {
+                    alert("Imagem armazenada com sucesso!");
+                }
+            }
+            http.send(params);
+        }     
+
+        togglePaletteOnly.onchange = function(){
+            const saveBtn = document.getElementById("saveBtn");
+            const canvas = document.getElementById("canvas");
+            const cor = document.getElementById("togglePaletteOnly");
+
+            var ctxBg = canvas.getContext('2d');
+            ctxBg.strokeStyle=cor.value;
+        }
+           
+        </script>
 <?php include('footer.tpl.php'); ?>

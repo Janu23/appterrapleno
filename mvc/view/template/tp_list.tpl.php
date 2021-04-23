@@ -44,6 +44,7 @@
             </form>
           <hr>
         </div>
+        
         <div id="container" style="padding:20px;" >
             <div class="alert alert-success col-sm-3" id="msg-desempenho" role="alert" style="text-align:center;">
             <?php echo "Acumulado: ".$this->fichasEditadas[0]; ?>
@@ -56,6 +57,9 @@
 
             <div class="alert alert-primary col-sm-3" id="msg-desempenho" role="alert" style="text-align:center;">
             <?php echo "Fichas Restantes: ".($this->totalFichas[0]-$this->fichasEditadas[0]); ?>
+            </div>
+            <div class="col-sm-12">
+                <p><b>Deseja cadastrar uma nova ficha? <span><a href="insert_tp.php">Clique aqui!&nbsp;<img src="../../img/icons/add.png" width="20px;" /></a></b></span></p>
             </div>
             <table class="table table-responsive hover" id="tabela">
                 <thead class="thead-dark">

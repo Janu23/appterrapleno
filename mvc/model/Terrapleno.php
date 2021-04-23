@@ -408,6 +408,29 @@
             return $this->$name;
         }
 
+
+        public function insert(){
+            $sql = "INSERT INTO tp(identificacao,km,km_final,latitude1,longitude1,latitude2,longitude2,trecho,estado,rodovia,sentido,terrapleno_contencao,material_origem,distancia_acostamento, lado) VALUES (:identificacao,:km,:km_final,:latitude1,:longitude1,:latitude2,:longitude2,:trecho,:estado,:rodovia,:sentido,:terrapleno_contencao,:material_origem,:distancia_acostamento, :lado)";
+            $consulta = Conexao::prepare($sql);
+            $consulta->bindValue('identificacao', $this->identificacao);
+            $consulta->bindValue('km' , $this->km);
+            $consulta->bindValue('km_final' , $this->kmFinal);
+            $consulta->bindValue('latitude1' , $this->latitude1);
+            $consulta->bindValue('longitude1' , $this->longitude1);
+            $consulta->bindValue('latitude2' , $this->latitude2);
+            $consulta->bindValue('longitude2' , $this->longitude2);
+            $consulta->bindValue('trecho' , $this->trecho);
+            $consulta->bindValue('estado' , $this->estado);
+            $consulta->bindValue('rodovia' , $this->rodovia);
+            $consulta->bindValue('sentido' , $this->sentido);
+            $consulta->bindValue('terrapleno_contencao' , $this->terraplenoContencao);
+            $consulta->bindValue('material_origem' , $this->materialOrigem);
+            $consulta->bindValue('distancia_acostamento' , $this->distanciaAcostamento);
+            $consulta->bindValue('lado' , $this->lado);
+
+            return $consulta->execute();
+        }
+
         public function addFoto(Fototerrapleno $foto) {
             $this->fotos[] = $foto;
             return $foto->insert();
@@ -519,6 +542,20 @@
 
         public function findInfoEdit($tabela, $id){
             $sql = "SELECT edit_geometria, edit_vegetacao, edit_drenagem, edit_ocorrencias, edit_causas_provaveis, edit_solucoes_provaveis, edit_outros, edit_estrutura_de_contencao, edit_fotos FROM {$tabela} WHERE codAuto = {$id}";
+            $consulta = Conexao::prepare($sql);
+            $consulta->execute();
+            return $consulta->fetch();
+        }
+
+        public function getMaxCodAuto(){
+            $sql = "SELECT MAX(codAuto) FROM tp";
+            $consulta = Conexao::prepare($sql);
+            $consulta->execute();
+            return $consulta->fetch();        
+        }
+    
+        public function verificaIdentificacao($tabela, $id_comp){
+            $sql = "SELECT COUNT(*) FROM {$tabela} WHERE LOCATE({$id_comp}, identificacao)";
             $consulta = Conexao::prepare($sql);
             $consulta->execute();
             return $consulta->fetch();
