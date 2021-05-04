@@ -75,7 +75,7 @@
                     <p>O Croqui pode ser editado quantas vezes quiser. Porém, somente a última edição permanecerá armazenada.</p>
                 </div>
                 <div class="col-sm-2">
-                    <a href="edit_croqui.php?id=<?php echo $this->id; ?>" class="btn btn-primary" style="float:right;"><span style="float:left;"></span><b>Editar</b> &nbsp; <img src="../../img/icons/edit.png" width="20px"/> </a>
+                    <a href="edit_croqui.php?id=<?php echo $this->id; ?>" class="btn btn-primary" style="float:right;"><span style="float:left;"></span><b>Editar</b> &nbsp; <img src="../../img/icons/pencil.png" width="20px"/> </a>
                 </div>
             </div>
         </div>

@@ -89,7 +89,7 @@
                         <td><?php echo $dados['identificacao']; ?></td>
                         <td><?php echo $dados['km']; ?></td>
                         <td><?php echo $dados['km_final']; ?></td>
-                        <td><a href="tp_edit.php?id=<?php echo $dados['codAuto']; ?>" class="btn btn-secondary ">Editar</a></td>
+                        <td><a href="tp_edit.php?id=<?php echo $dados['codAuto']; ?>" class="btn btn-secondary "><b>Editar</b> &nbsp;<img src="../../img/icons/pencil.png" width="20px"/></a></td>
                     </tr>
                 <?php 
                     }

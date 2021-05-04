@@ -83,7 +83,7 @@
             var ctxBg = canvas.getContext('2d');
 
             var imgSprite = new Image();
-            imgSprite.src = "../../img/croqui.jpeg";
+            imgSprite.src = "../../img/croqui/<?php echo $_SESSION['identificacao']; ?>.jpg";
             imgSprite.onload = function() {
             ctxBg.drawImage(imgSprite,0,0,1135,550,0,0,900,400);
 
